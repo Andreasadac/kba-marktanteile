@@ -1,1 +1,23 @@
+import pandas as pd
 
+# Lokale Datei laden
+excel_datei = "kraftstoffarten.xlsx"
+df = pd.read_excel(excel_datei, sheet_name=0, engine="openpyxl")
+
+# Leere Zeilen entfernen
+df.dropna(how="all", inplace=True)
+
+# Letzte Zeile extrahieren
+letzte_zeile = df.iloc[-1]
+kraftstoffarten = df.columns[1:]
+werte = letzte_zeile[1:]
+
+# Neue Tabelle erstellen
+marktanteile = pd.DataFrame({
+    "Kraftstoffart": kraftstoffarten,
+    "Marktanteil (%)": werte
+})
+
+# Als CSV speichern
+marktanteile.to_csv("marktanteile.csv", index=False, encoding="utf-8")
+print("CSV-Datei erfolgreich erstellt.")
